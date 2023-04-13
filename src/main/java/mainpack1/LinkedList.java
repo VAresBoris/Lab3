@@ -1,4 +1,4 @@
-package mainpack;
+package mainpack1;
 
 public class LinkedList {
     private Node head;
@@ -11,9 +11,11 @@ public class LinkedList {
             head = node;
             tail = node;
         } else {
+            node.prev = tail;
             tail.next = node;
             tail = node;
         }
+
     }
 
     public void addHead(String value) {
@@ -23,6 +25,7 @@ public class LinkedList {
             tail = node;
         } else {
             node.next = head;
+            head.prev = node;
             head = node;
         }
     }
@@ -49,7 +52,9 @@ public class LinkedList {
         head = head.next;
         if (head == null) {
             tail = null;
+            return value;
         }
+        head.prev = null;
         return value;
     }
 
@@ -58,14 +63,12 @@ public class LinkedList {
             return null;
         }
         String value = tail.value;
-        Node temp = head;
-        Node res = head;
-        while (temp != tail) {
-            res = temp;
-            temp = temp.next;
+        tail = tail.prev;
+        if (tail == null){
+            head = null;
+            return value;
         }
-        res.next = null;
-        tail = res;
+        tail.next = null;
         return value;
     }
 
@@ -84,6 +87,22 @@ public class LinkedList {
         return head == null && tail == null;
     }
 
+    public void addBeforeArray(String[] array) {
+        for(int i = array.length - 1; i >= 0; i--) {
+            String s = array[i];
+            addHead(s);
+        }
+    }
+
+    public void addAfterArray(String[] array) {
+        for(int i = 0; i < array.length; i++) {
+            String s = array[i];
+            addTail(s);
+        }
+    }
+
+
+
     public void printAll() {    // печать
         Node temp = head;
         while (temp != null) {
@@ -96,6 +115,7 @@ public class LinkedList {
     private static class Node {
         Node next;
         final String value;
+        Node prev;
 
         public Node(String value) {
             this.value = value;
