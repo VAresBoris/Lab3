@@ -1,6 +1,8 @@
 package mainpack1;
 
-public class LinkedList {
+import java.util.Iterator;
+
+public class LinkedList <T> implements Iterable<T>{
     private Node head;
     private Node tail;
 
@@ -73,12 +75,12 @@ public class LinkedList {
     }
 
     public boolean contains(String value) {
-        Node nex = head;
-        while (nex != null) {
-            if (nex.value == value) {
+        Node temp = head;
+        while (temp != null) {
+            if (temp.value == value) {
                 return true;
             }
-            nex = nex.next;
+            temp = temp.next;
         }
         return false;
     }
@@ -102,7 +104,6 @@ public class LinkedList {
     }
 
 
-
     public void printAll() {    // печать
         Node temp = head;
         while (temp != null) {
@@ -110,6 +111,32 @@ public class LinkedList {
             temp = temp.next;
         }
         System.out.println();
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new MyIterator(head);
+    }
+
+    public class MyIterator implements Iterator {
+
+        private Node current;
+
+        MyIterator (Node current) {
+            this.current = current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current!= null;
+        }
+
+        @Override
+        public Object next() {
+            String value = current.value;
+            current = current.next;
+            return value;
+        }
     }
 
     private static class Node {
